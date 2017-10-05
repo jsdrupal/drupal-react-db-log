@@ -12,7 +12,9 @@ export default class App extends Component {
     loaded: false,
     buttonDisabled: false,
     page: 0,
-    filterParams: {},
+    filterParams: {
+      sort_by: 'wid',
+    },
   }
   componentDidMount() {
     this.fetchLogEntries(this.state.page);
@@ -26,9 +28,9 @@ export default class App extends Component {
         .then(({ data }) => this.setState({ data, page, loaded: true, buttonDisabled: false }));
     });
   }
-  sortHandler = (order, sort) => {
+  sortHandler = (sort, order) => {
     this.setState({
-      filterParams: Object.assign(this.state.filterParams, { order, sort }),
+      filterParams: Object.assign(this.state.filterParams, { sort_by: `${sort}_${order}` }),
     }, () => this.fetchLogEntries(this.state.page));
   }
   render() {
@@ -37,7 +39,6 @@ export default class App extends Component {
         {this.state.loaded ? <LogEntriesTable
           entries={this.state.data}
           sortHandler={this.sortHandler}
-          sort={this.state.filterParams.sort}
         /> : <Loading />}
         <p>
           <button

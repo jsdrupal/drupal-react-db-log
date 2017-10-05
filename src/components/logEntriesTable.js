@@ -10,21 +10,20 @@ export default class LogEntriesTable extends Component {
       user: PropTypes.string,
       wid: PropTypes.string,
     })).isRequired,
-    sort: PropTypes.string,
+    order: PropTypes.string,
   }
   static defaultProps = {
-    sort: 'desc',
+    order: 'asc',
   }
-  constructor({ entries, sortHandler, sort }) {
+  constructor({ entries, sortHandler, order }) {
     super();
-    this.state = { entries, sort };
+    this.state = { entries, order };
     this.sortHandler = sortHandler;
   }
   state = {}
-  componentWillReceiveProps({ entries, sort }) {
-    // @TODO - handle this better
+  componentWillReceiveProps({ entries }) {
     if (JSON.stringify(this.state.entries) !== JSON.stringify(entries)) {
-      this.setState({ entries, sort: sort === 'desc' ? 'asc' : 'desc' });
+      this.setState({ entries, order: (this.state.order === 'desc' && 'asc') || 'desc' });
     }
   }
   render() {
@@ -34,10 +33,10 @@ export default class LogEntriesTable extends Component {
           <tr>
             <th>
               <a
-                href={`?order=type&sort=${this.state.sort}`}
+                href={`?sort_by=type_${this.state.order}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  this.sortHandler('type', this.state.sort);
+                  this.sortHandler('type', this.state.order);
                 }}
                 title="sort by Type"
               >
@@ -46,10 +45,10 @@ export default class LogEntriesTable extends Component {
             </th>
             <th>
               <a
-                href={`?order=timestamp&sort=${this.state.sort}`}
+                href={`?sort_by=timestamp_${this.state.order}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  this.sortHandler('timestamp', this.state.sort);
+                  this.sortHandler('timestamp', this.state.order);
                 }}
                 title="sort by Date"
               >
@@ -59,10 +58,10 @@ export default class LogEntriesTable extends Component {
             <th>Message</th>
             <th>
               <a
-                href={`?order=name&sort=${this.state.sort}`}
+                href={`?order=name_${this.state.order}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  this.sortHandler('name', this.state.sort);
+                  this.sortHandler('name', this.state.order);
                 }}
                 title="sort by User"
               >
