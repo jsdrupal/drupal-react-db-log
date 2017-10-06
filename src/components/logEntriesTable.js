@@ -2,6 +2,52 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import moment from 'moment';
+
+const TableHeader = ({ sortHandler, order }) => (
+  <thead>
+    <tr>
+      <th>
+        <a
+          href={`?sort_by=type_${order}`}
+          onClick={(e) => {
+            e.preventDefault();
+            sortHandler('type', order);
+          }}
+          title="sort by Type"
+        >
+          Type
+        </a>
+      </th>
+      <th>
+        <a
+          href={`?sort_by=timestamp_${order}`}
+          onClick={(e) => {
+            e.preventDefault();
+            sortHandler('timestamp', order);
+          }}
+          title="sort by Date"
+        >
+          Date
+        </a>
+      </th>
+      <th>Message</th>
+      <th>
+        <a
+          href={`?order=name_${order}`}
+          onClick={(e) => {
+            e.preventDefault();
+            sortHandler('name', order);
+          }}
+          title="sort by User"
+        >
+          User
+        </a>
+      </th>
+      <th >Operations</th>
+    </tr>
+  </thead>
+);
+
 export default class LogEntriesTable extends Component {
   static propTypes = {
     entries: PropTypes.arrayOf(PropTypes.shape({
@@ -30,53 +76,15 @@ export default class LogEntriesTable extends Component {
   render() {
     return (
       <table>
-        <thead>
-          <tr>
-            <th>
-              <a
-                href={`?sort_by=type_${this.state.order}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  this.sortHandler('type', this.state.order);
-                }}
-                title="sort by Type"
-              >
-                Type
-              </a>
-            </th>
-            <th>
-              <a
-                href={`?sort_by=timestamp_${this.state.order}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  this.sortHandler('timestamp', this.state.order);
-                }}
-                title="sort by Date"
-              >
-                Date
-              </a>
-            </th>
-            <th>Message</th>
-            <th>
-              <a
-                href={`?order=name_${this.state.order}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  this.sortHandler('name', this.state.order);
-                }}
-                title="sort by User"
-              >
-                User
-              </a>
-            </th>
-            <th >Operations</th>
-          </tr>
-        </thead>
+        <TableHeader
+          sortHandler={this.sortHandler}
+          order={this.state.order}
+        />
         <tbody>
           {this.state.entries.map(entry => (
             <tr>
               <td>{entry.type}</td>
-              <td>{entry.timestamp}</td>
+              <td>{moment.unix(entry.timestamp).format('MM/DD/YYYY - HH:mm')}</td>
               <td><a href={`/admin/reports/dblog/event/${entry.wid}`}>{`${entry.message.substring(0, 54)}...`}</a></td>
               <td>{entry.user}</td>
               <td />

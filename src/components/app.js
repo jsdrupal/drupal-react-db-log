@@ -24,7 +24,7 @@ export default class App extends Component {
       .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(this.state.filterParams[k])}`)
       .join('&');
     this.setState({ buttonDisabled: true }, () => {
-      axios.get(`${dblog}?page=${page || this.state.page}${additionalQueryOptions ? '&' + additionalQueryOptions : ''}`)
+      axios.get(`${dblog}?page=${page}${additionalQueryOptions ? '&' + additionalQueryOptions : ''}`)
         .then(({ data }) => this.setState({ data, page, loaded: true, buttonDisabled: false }));
     });
   }
@@ -42,7 +42,8 @@ export default class App extends Component {
         /> : <Loading />}
         <p>
           <button
-            disabled={this.state.buttonDisabled}
+            disabled={this.state.buttonDisabled || this.state.page === 0}
+            data-destinationPage={this.state.page - 1}
             onClick={(e) => {
               e.preventDefault();
               if (this.state.page === 0) {
@@ -55,6 +56,7 @@ export default class App extends Component {
           </button>
           <button
             disabled={this.state.buttonDisabled}
+            data-destinationPage={this.state.page + 1}
             onClick={(e) => {
               e.preventDefault();
               this.fetchLogEntries(this.state.page + 1);
