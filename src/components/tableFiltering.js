@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 export default class TableFiltering extends Component {
+  static propTypes = {
+    typeFilterHandler: PropTypes.func.isRequired,
+  }
   constructor({ typeFilterHandler }) {
     super();
     this.typeFilterHandler = typeFilterHandler;
@@ -20,7 +23,7 @@ export default class TableFiltering extends Component {
   }
   render() {
     return (
-      <select multiple="multiple" size="7" onChange={this.filterChangeHandler} value={this.state.typeFilters}>
+      <select multiple="multiple" size="7" onClick={this.filterChangeHandler} value={this.state.typeFilters}>
         <option value="access+denied">access denied</option>
         <option value="cron">cron</option>
         <option value="form">form</option>
