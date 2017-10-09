@@ -48,6 +48,11 @@ const TableHeader = ({ sortHandler, order }) => (
   </thead>
 );
 
+TableHeader.propTypes = {
+  sortHandler: PropTypes.func.isRequired,
+  order: PropTypes.string.isRequired,
+};
+
 export default class LogEntriesTable extends Component {
   static propTypes = {
     entries: PropTypes.arrayOf(PropTypes.shape({
