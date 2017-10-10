@@ -24,11 +24,6 @@ export default class App extends Component {
   }
   fetchLogEntries = (page) => {
     const queryString = qs.stringify({ ...this.state.filterParams, page: this.state.page }, { arrayFormat: 'brackets', encode: false });
-    // console.log(queryString);
-
-    // const additionalQueryOptions = Object.keys(this.state.filterParams)
-    //   .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(this.state.filterParams[k])}`)
-    //   .join('&');
     this.setState({ buttonDisabled: true }, () => {
       axios.get(`${dblog}?${queryString}`)
         .then(({ data }) => this.setState({ data, page, loaded: true, buttonDisabled: false }));
@@ -40,7 +35,9 @@ export default class App extends Component {
     }, () => this.fetchLogEntries(this.state.page));
   }
   typeFilterHandler = (typeFilters) => {
-    this.setState({ filterParams: Object.assign(this.state.filterParams, { type: typeFilters }) }, () => {
+    this.setState({
+      filterParams: Object.assign(this.state.filterParams, { type: typeFilters }),
+    }, () => {
       this.fetchLogEntries(this.state.page);
     });
   }
