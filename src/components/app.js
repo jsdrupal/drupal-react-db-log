@@ -4,7 +4,10 @@ import axios from 'axios';
 import qs from 'qs';
 
 import Loading from './helpers/loading';
-import TableFiltering from './tableFiltering';
+
+import Type from './type';
+import Severity from './severity';
+
 import LogEntriesTable from './logEntriesTable';
 
 const dblog = 'http://d8react.drupal.vm/admin/reports/dblog/rest';
@@ -16,6 +19,7 @@ export default class App extends Component {
     buttonDisabled: false,
     page: 0,
     filterParams: {
+      _format: 'json',
       sort_by: 'wid',
     },
   }
@@ -26,7 +30,12 @@ export default class App extends Component {
     const queryString = qs.stringify({ ...this.state.filterParams, page: this.state.page }, { arrayFormat: 'brackets', encode: false });
     this.setState({ buttonDisabled: true }, () => {
       axios.get(`${dblog}?${queryString}`)
-        .then(({ data }) => this.setState({ data, page, loaded: true, buttonDisabled: false }));
+        .then(({ data }) => this.setState({
+          data,
+          page,
+          loaded: true,
+          buttonDisabled: false,
+        }));
     });
   }
   sortHandler = (sort, order) => {
@@ -36,17 +45,40 @@ export default class App extends Component {
   }
   typeFilterHandler = (typeFilters) => {
     this.setState({
-      filterParams: Object.assign(this.state.filterParams, { type: typeFilters }),
+      filterParams: Object.assign(this.state.filterParams, { type: Array.from(typeFilters) }),
     }, () => {
       this.fetchLogEntries(this.state.page);
     });
+  }
+  severityFilterHandler = (severity) => {
+    this.setState({
+      filterParams: Object.assign(this.state.filterParams, { severity: Array.from(severity) }),
+    }, () => {
+      this.fetchLogEntries(this.state.page);
+    });
+  }
+  nextPageHandler = (e) => {
+    e.preventDefault();
+    this.fetchLogEntries(this.state.page + 1);
+  }
+  previousPageHandler = (e) => {
+    e.preventDefault();
+    if (this.state.page === 0) {
+      return;
+    }
+    this.fetchLogEntries(this.state.page - 1);
   }
   render() {
     return (
       <div>
         {this.state.loaded ? [
-          <TableFiltering
+          <Type
             typeFilterHandler={this.typeFilterHandler}
+            filters={new Set(this.state.filterParams.type)}
+          />,
+          <Severity
+            severityFilterHandler={this.severityFilterHandler}
+            severity={new Set(this.state.filterParams.severity)}
           />,
           <LogEntriesTable
             entries={this.state.data}
@@ -56,23 +88,14 @@ export default class App extends Component {
           <button
             disabled={this.state.buttonDisabled || this.state.page === 0}
             data-destinationPage={this.state.page - 1}
-            onClick={(e) => {
-              e.preventDefault();
-              if (this.state.page === 0) {
-                return;
-              }
-              this.fetchLogEntries(this.state.page - 1);
-            }}
+            onClick={this.previousPageHandler}
           >
             Previous
           </button>
           <button
             disabled={this.state.buttonDisabled}
             data-destinationPage={this.state.page + 1}
-            onClick={(e) => {
-              e.preventDefault();
-              this.fetchLogEntries(this.state.page + 1);
-            }}
+            onClick={this.nextPageHandler}
           >
             Next
           </button>

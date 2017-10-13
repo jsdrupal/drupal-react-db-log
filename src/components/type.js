@@ -5,25 +5,24 @@ export default class TableFiltering extends Component {
   static propTypes = {
     typeFilterHandler: PropTypes.func.isRequired,
   }
-  constructor({ typeFilterHandler }) {
+  constructor({ typeFilterHandler, filters }) {
     super();
     this.typeFilterHandler = typeFilterHandler;
-  }
-  state = {
-    typeFilters: [],
+    this.filters = filters;
   }
   filterChangeHandler = (e) => {
-    this.setState({
-      typeFilters: [e.target.value]
-        .filter(val => this.state.typeFilters.indexOf(val) === -1)
-        .concat(this.state.typeFilters.filter(val => [e.target.value].indexOf(val) === -1)),
-    }, () => {
-      this.typeFilterHandler(this.state.typeFilters);
-    });
+    if (this.filters.has(e.target.value)) {
+      this.filters.delete(e.target.value);
+    }
+    else {
+      this.filters.add(e.target.value);
+    }
+    this.typeFilterHandler(this.filters);
   }
   render() {
-    return (
-      <select multiple="multiple" size="7" onClick={this.filterChangeHandler} value={this.state.typeFilters}>
+    return [
+      <p>Type</p>,
+      <select multiple="multiple" size="7" onClick={this.filterChangeHandler} value={Array.from(this.filters)}>
         <option value="access+denied">access denied</option>
         <option value="cron">cron</option>
         <option value="form">form</option>
@@ -32,6 +31,6 @@ export default class TableFiltering extends Component {
         <option value="system">system</option>
         <option value="user">user</option>
       </select>
-    );
+    ];
   }
 }
