@@ -10,7 +10,7 @@ import Severity from './severity';
 
 import LogEntriesTable from './logEntriesTable';
 
-const dblog = 'http://d8react.drupal.vm/admin/reports/dblog/rest';
+const dblog = drupalSettings.path.baseUrl + drupalSettings.path.pathPrefix + '/admin/reports/dblog/rest';
 
 export default class App extends Component {
   state = {

@@ -1,0 +1,7 @@
+react_admin.dblog_page:
+  path: /admin/reports/dblog-react
+  defaults:
+    _controller: \Drupal\react_admin\Controller\DblogController::overview
+    _title: 'Recent log messages'
+  requirements:
+    _permission: 'access site reports'

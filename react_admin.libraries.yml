@@ -1,0 +1,13 @@
+dblog:
+  js:
+    https://unpkg.com/react@16/umd/react.production.min.js:
+      external: true
+    https://unpkg.com/react-dom@16/umd/react-dom.production.min.js:
+      external: true
+    js/dist/helpers.js:
+      preprocess: false
+    js/dist/index.js:
+      preprocess: false
+      
+  dependencies:
+    - core/drupalSettings
