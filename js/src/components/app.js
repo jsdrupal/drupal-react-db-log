@@ -10,7 +10,7 @@ import Severity from './severity';
 
 import LogEntriesTable from './logEntriesTable';
 
-const dblog = drupalSettings.path.baseUrl + drupalSettings.path.pathPrefix + '/admin/reports/dblog/rest';
+const dblog = `${window.location.origin}/admin/reports/dblog/rest`;
 
 export default class App extends Component {
   state = {
@@ -72,14 +72,21 @@ export default class App extends Component {
     return (
       <div>
         {this.state.loaded ? [
-          <Type
-            typeFilterHandler={this.typeFilterHandler}
-            filters={new Set(this.state.filterParams.type)}
-          />,
-          <Severity
-            severityFilterHandler={this.severityFilterHandler}
-            severity={new Set(this.state.filterParams.severity)}
-          />,
+          <p>The Database Logging module logs system events in the Drupal database. Monitor your site or debug site problems on this page.</p>,
+          <div className="form--inline clearfix">
+            <div className="js-form-item form-item js-form-type-select form-type-select js-form-item-type form-item-type">
+              <Type
+                typeFilterHandler={this.typeFilterHandler}
+                filters={new Set(this.state.filterParams.type)}
+              />
+            </div>
+            <div className="js-form-item form-item js-form-type-select form-type-select js-form-item-severity form-item-severity">
+              <Severity
+                severityFilterHandler={this.severityFilterHandler}
+                severity={new Set(this.state.filterParams.severity)}
+              />
+            </div>
+          </div>,
           <LogEntriesTable
             entries={this.state.data}
             sortHandler={this.sortHandler}

@@ -8,20 +8,12 @@ module.exports = [
       filename: 'index.js',
       path: path.resolve(__dirname, 'dist'),
     },
-    devServer: {
-      contentBase: path.join(__dirname, 'dist'),
-      compress: true,
-      port: 9000,
-      hot: true,
-      inline: true,
-    },
     externals: {
       react: 'React',
       'react-dom': 'ReactDOM',
     },
     plugins: [
       new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('development') } }),
-      new webpack.HotModuleReplacementPlugin(),
     ],
     module: {
       loaders: [

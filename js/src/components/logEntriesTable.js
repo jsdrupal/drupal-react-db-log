@@ -6,6 +6,7 @@ import moment from 'moment';
 const TableHeader = ({ sortHandler, order }) => (
   <thead>
     <tr>
+      <th></th>
       <th>
         <a
           href={`?sort_by=type_${order}`}
@@ -87,7 +88,8 @@ export default class LogEntriesTable extends Component {
         />
         <tbody>
           {this.state.entries.map(entry => (
-            <tr>
+            <tr className={`${entry.type} ${entry.severity}`}>
+              <td>{entry.severity}</td>
               <td>{entry.type}</td>
               <td>{moment.unix(entry.timestamp).format('MM/DD/YYYY - HH:mm')}</td>
               <td><a href={`/admin/reports/dblog/event/${entry.wid}`}>{`${entry.message.substring(0, 54)}...`}</a></td>
