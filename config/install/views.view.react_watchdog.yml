@@ -977,7 +977,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           date_format: custom
-          custom_date_format: U
+          custom_date_format: 'm/d/o - H:i'
           timezone: ''
           plugin_id: date
         message:

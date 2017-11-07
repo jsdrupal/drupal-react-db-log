@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "moment": "^2.18.1",
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
     "react": "^16.0.0",

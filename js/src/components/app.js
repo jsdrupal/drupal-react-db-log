@@ -27,7 +27,10 @@ export default class App extends Component {
     this.fetchLogEntries(this.state.page);
   }
   fetchLogEntries = (page) => {
-    const queryString = qs.stringify({ ...this.state.filterParams, page: this.state.page }, { arrayFormat: 'brackets', encode: false });
+    const queryString = qs.stringify(
+      { ...this.state.filterParams, page: this.state.page },
+      { arrayFormat: 'brackets', encode: false },
+    );
     this.setState({ buttonDisabled: true }, () => {
       axios.get(`${dblog}?${queryString}`)
         .then(({ data }) => this.setState({

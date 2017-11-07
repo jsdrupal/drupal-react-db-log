@@ -21,7 +21,7 @@ export default class Severity extends Component {
   }
   render() {
     return [
-      <p>Severity</p>,
+      <label htmlFor="edit-severity">Severity</label>,
       <select multiple="multiple" size="7" onClick={this.filterChangeHandler} value={Array.from(this.severity)}>
         <option value="0">Emergency</option>
         <option value="1">Alert</option>

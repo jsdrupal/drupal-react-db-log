@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import moment from 'moment';
-
 const TableHeader = ({ sortHandler, order }) => (
   <thead>
     <tr>
@@ -91,7 +89,7 @@ export default class LogEntriesTable extends Component {
             <tr className={`${entry.type} ${entry.severity}`}>
               <td className="icon" />
               <td>{entry.type}</td>
-              <td>{moment.unix(entry.timestamp).format('MM/DD/YYYY - HH:mm')}</td>
+              <td>{entry.timestamp}</td>
               <td><a href={`/admin/reports/dblog/event/${entry.wid}`}>{`${entry.message.substring(0, 54)}...`}</a></td>
               <td>{entry.user}</td>
               <td />

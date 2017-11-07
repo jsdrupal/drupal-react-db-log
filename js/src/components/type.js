@@ -21,7 +21,7 @@ export default class TableFiltering extends Component {
   }
   render() {
     return [
-      <p>Type</p>,
+      <label htmlFor="edit-type">Type</label>,
       <select multiple="multiple" size="7" onClick={this.filterChangeHandler} value={Array.from(this.filters)}>
         <option value="access+denied">access denied</option>
         <option value="cron">cron</option>

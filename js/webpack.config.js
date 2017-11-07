@@ -11,7 +11,6 @@ module.exports = [
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-      new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
       new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
       new Minify(),
     ],
