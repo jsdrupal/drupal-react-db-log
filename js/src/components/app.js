@@ -70,7 +70,7 @@ export default class App extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="admin-dblog">
         {this.state.loaded ? [
           <p>The Database Logging module logs system events in the Drupal database. Monitor your site or debug site problems on this page.</p>,
           <div className="form--inline clearfix">

@@ -8,6 +8,7 @@ dblog:
       preprocess: false
     js/dist/index.js:
       preprocess: false
-      
+
   dependencies:
     - core/drupalSettings
+    - dblog/drupal.dblog

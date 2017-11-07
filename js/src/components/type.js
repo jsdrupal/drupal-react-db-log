@@ -30,7 +30,7 @@ export default class TableFiltering extends Component {
         <option value="php">php</option>
         <option value="system">system</option>
         <option value="user">user</option>
-      </select>
+      </select>,
     ];
   }
 }
