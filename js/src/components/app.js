@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-
 import qs from 'qs';
 
 import Loading from './helpers/loading';
+import { Severity, Type } from './filters';
+import Table from './table';
 
-import Type from './type';
-import Severity from './severity';
-
-import LogEntriesTable from './logEntriesTable';
+const request = require('superagent');
 
 const dblog = `${window.location.origin}/admin/reports/dblog/rest`;
 
@@ -32,9 +29,10 @@ export default class App extends Component {
       { arrayFormat: 'brackets', encode: false },
     );
     this.setState({ buttonDisabled: true }, () => {
-      axios.get(`${dblog}?${queryString}`)
-        .then(({ data }) => this.setState({
-          data,
+      request
+        .get(`${dblog}?${queryString}`)
+        .end((err, { body }) => this.setState({
+          data: body,
           page,
           loaded: true,
           buttonDisabled: false,
@@ -90,7 +88,7 @@ export default class App extends Component {
               />
             </div>
           </div>,
-          <LogEntriesTable
+          <Table
             entries={this.state.data}
             sortHandler={this.sortHandler}
           />] : <Loading />}
