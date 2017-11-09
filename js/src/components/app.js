@@ -7,7 +7,7 @@ import Table from './table';
 
 const request = require('superagent');
 
-const dblog = `${window.location.origin}/admin/reports/dblog/rest`;
+const dblog = `${window.location.origin}${drupalSettings.path.baseUrl}/admin/reports/dblog/rest`;
 
 export default class App extends Component {
   state = {
