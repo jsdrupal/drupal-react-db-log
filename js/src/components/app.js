@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import qs from 'qs';
+import request from 'superagent';
 
 import Loading from './helpers/loading';
 import { Select, Table } from './elements';
 
-const request = require('superagent');
-
-const dblog = `${window.location.origin}${drupalSettings.path.baseUrl}/admin/reports/dblog/rest`;
+const dblogEndpointUrl = `${window.location.origin}${drupalSettings.path.baseUrl}/admin/reports/dblog/rest`;
 
 export default class App extends Component {
   state = {
@@ -30,7 +29,7 @@ export default class App extends Component {
     );
     this.setState({ buttonDisabled: true }, () => {
       request
-        .get(`${dblog}?${queryString}`)
+        .get(`${dblogEndpointUrl}?${queryString}`)
         .end((err, { body }) => this.setState({
           data: body,
           page,
