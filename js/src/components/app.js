@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import qs from 'qs';
 
 import Loading from './helpers/loading';
-import Select from './elements/select';
-import Table from './table';
+import { Select, Table } from './elements';
 
 const request = require('superagent');
 
@@ -15,6 +14,7 @@ export default class App extends Component {
     loaded: false,
     buttonDisabled: false,
     page: 0,
+    order: 'desc',
     filterParams: {
       _format: 'json',
       sort_by: 'wid',
@@ -41,6 +41,7 @@ export default class App extends Component {
   }
   sortHandler = (sort, order) => {
     this.setState({
+      order: (order === 'desc' && 'asc') || 'desc',
       filterParams: Object.assign(this.state.filterParams, { sort_by: `${sort}_${order}` }),
     }, () => this.fetchLogEntries(this.state.page));
   }
@@ -73,10 +74,11 @@ export default class App extends Component {
     return (
       <div className="admin-dblog">
         {this.state.loaded ? [
-          <p>The Database Logging module logs system events in the Drupal database. Monitor your site or debug site problems on this page.</p>,
-          <div className="form--inline clearfix">
+          <p key="message">The Database Logging module logs system events in the Drupal database. Monitor your site or debug site problems on this page.</p>,
+          <div key="filters" className="form--inline clearfix">
             <div className="js-form-item form-item js-form-type-select form-type-select js-form-item-type form-item-type">
               <Select
+                key="select-type"
                 onChange={this.typeFilterHandler}
                 label="Type"
                 data={[
@@ -92,6 +94,7 @@ export default class App extends Component {
             </div>
             <div className="js-form-item form-item js-form-type-select form-type-select js-form-item-severity form-item-severity">
               <Select
+                key="select-severity"
                 onChange={this.severityFilterHandler}
                 label="Severity"
                 data={[
@@ -108,20 +111,27 @@ export default class App extends Component {
             </div>
           </div>,
           <Table
+            key="logTable"
+            order={this.state.order}
+            header={[
+              { txt: '' },
+              { txt: 'Type', callback: this.sortHandler, sort: 'type' },
+              { txt: 'Date', callback: this.sortHandler, sort: 'timestamp' },
+              { txt: 'Message' },
+              { txt: 'User', callback: this.sortHandler, sort: 'name' },
+              { txt: 'Operations' },
+            ]}
             entries={this.state.data}
-            sortHandler={this.sortHandler}
           />] : <Loading />}
         <p>
           <button
             disabled={this.state.buttonDisabled || this.state.page === 0}
-            data-destinationPage={this.state.page - 1}
             onClick={this.previousPageHandler}
           >
             Previous
           </button>
           <button
             disabled={this.state.buttonDisabled}
-            data-destinationPage={this.state.page + 1}
             onClick={this.nextPageHandler}
           >
             Next

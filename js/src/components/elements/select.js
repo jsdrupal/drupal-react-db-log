@@ -18,7 +18,7 @@ export default class Select extends Component {
     this.selected = new Set();
     this.onChange = onChange;
   }
-  clickHandler = (e) => {
+  changeHandler = (e) => {
     if (this.selected.has(e.target.value)) {
       this.selected.delete(e.target.value);
     }
@@ -30,10 +30,10 @@ export default class Select extends Component {
   render() {
     const { label, data } = this.props;
     return [
-      label !== '' ? <label htmlFor={`select-${label}`}>{label}</label> : '',
-      <select multiple size="7" onClick={this.clickHandler} value={Array.from(this.selected)}>
+      label !== '' ? <label key={`select-label-${label}`} htmlFor={`select-${label}`}>{label}</label> : '',
+      <select key={`select-${label || 'select'}`} multiple size="7" onChange={this.changeHandler} value={Array.from(this.selected)}>
         {data.map(({ value, item }) => (
-          <option value={value}>{item}</option>
+          <option key={`${item}-${value}`} value={value}>{item}</option>
         ))}
       </select>,
     ];
