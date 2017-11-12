@@ -15,6 +15,7 @@ export default class Select extends Component {
   }
   constructor({ onChange }) {
     super();
+    // @fixme State should be stored in this.state
     this.selected = new Set();
     this.onChange = onChange;
   }
