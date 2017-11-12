@@ -12,7 +12,7 @@ const Table = ({ entries, header, order }) => (
           <td className="icon" />
           <td>{entry.type}</td>
           <td>{entry.timestamp}</td>
-          <td><a href={`/admin/reports/dblog/event/${entry.wid}`}>{`${entry.message.substring(0, 54)}...`}</a></td>
+          <td><a href={`/admin/reports/dblog/event/${entry.wid}`}>{`${entry.message.substring(0, 54)} …`}</a></td>
           <td>{entry.user}</td>
           <td />
         </tr>
