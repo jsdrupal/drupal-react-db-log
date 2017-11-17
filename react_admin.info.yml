@@ -1,8 +1,10 @@
 name: React admin
+description: Experimental React-based Drupal admin UI.
+# See discussion: https://www.drupal.org/project/ideas/issues/2913321
 core: 8.x
 type: module
 dependencies:
-  - serialization
   - dblog
   - rest
+  - serialization
   - views
