@@ -17,6 +17,8 @@ export default class App extends Component {
     filterParams: {
       _format: 'json',
       sort_by: 'wid',
+      type: [],
+      severity: [],
     },
   }
   componentDidMount() {
@@ -79,6 +81,7 @@ export default class App extends Component {
               <Select
                 key="select-type"
                 onChange={this.typeFilterHandler}
+                selected={this.state.filterParams.type}
                 label="Type"
                 data={[
                   { value: 'access+denied', item: 'access denied' },
@@ -95,6 +98,7 @@ export default class App extends Component {
               <Select
                 key="select-severity"
                 onChange={this.severityFilterHandler}
+                selected={this.state.filterParams.severity}
                 label="Severity"
                 data={[
                   { value: '0', item: 'Emergency' },
