@@ -1,11 +1,6 @@
 import React from 'react';
 import { arrayOf, string, func, shape } from 'prop-types';
 
-const onClickSort = (e) => {
-  e.preventDefault();
-  entry.callback(entry.sort, order);
-};
-
 const TableHeader = ({ headerEntries, order }) => (
   <thead>
     <tr>
@@ -14,8 +9,11 @@ const TableHeader = ({ headerEntries, order }) => (
           <th key={`$txt-${entry.txt}`}>
             {(entry.callback ? (
               <a
-                href={'?sort_by=timestamp_'}
-                onClick={onClickSort}
+                href={'?sort_by=timestamp'}
+                onClick={(e) => {
+                  e.preventDefault();
+                  entry.callback(entry.sort, order);
+                }}
                 title={`Sort by ${entry.txt}`}
               >
                 {entry.txt}

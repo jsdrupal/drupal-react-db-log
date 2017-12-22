@@ -120,7 +120,22 @@ export default class App extends Component {
               { txt: 'User', callback: this.sortHandler, sort: 'name' },
               { txt: 'Operations' },
             ]}
-            entries={this.state.data}
+            entries={this.state.data.map(entry => (
+              {
+                rowKey: entry.wid,
+                rowClasses: [entry.type, entry.severity],
+                rowData: [
+                  '',
+                  entry.type,
+                  entry.timestamp,
+                  {
+                    href: `/admin/reports/dblog/event/${entry.wid}`,
+                    text: `${entry.message.substring(0, 54)} …`,
+                  },
+                  entry.user,
+                  '',
+                ],
+              }))}
           />] : <Loading />}
         <p>
           <button

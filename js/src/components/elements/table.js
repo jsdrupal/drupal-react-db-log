@@ -1,5 +1,5 @@
 import React from 'react';
-import { arrayOf, string, shape, func } from 'prop-types';
+import { arrayOf, string, shape, func, array } from 'prop-types';
 
 import TableHeader from './tableHeader';
 
@@ -8,13 +8,18 @@ const Table = ({ entries, header, order }) => (
     <TableHeader headerEntries={header} order={order} />
     <tbody>
       {entries.map(entry => (
-        <tr className={`${entry.type} ${entry.severity}`} key={entry.wid}>
-          <td className="icon" />
-          <td>{entry.type}</td>
-          <td>{entry.timestamp}</td>
-          <td><a href={`/admin/reports/dblog/event/${entry.wid}`}>{`${entry.message.substring(0, 54)} …`}</a></td>
-          <td>{entry.user}</td>
-          <td />
+        <tr className={`${entry.rowClasses.join(' ')}`} key={entry.rowKey}>
+          {entry.rowData.map((tableRowItem) => {
+            if (tableRowItem === '') {
+              return (<td />);
+            }
+            if (tableRowItem instanceof Object) {
+              return (<td>
+                <a href={tableRowItem.href}>{tableRowItem.text}</a>
+              </td>);
+            }
+            return (<td>{tableRowItem}</td>);
+          })}
         </tr>
       ))}
     </tbody>
@@ -22,13 +27,7 @@ const Table = ({ entries, header, order }) => (
 );
 
 Table.propTypes = {
-  entries: arrayOf(shape({
-    type: string,
-    timestamp: string,
-    message: string,
-    user: string,
-    wid: string,
-  })).isRequired,
+  entries: array.isRequired,
   header: arrayOf(shape({
     txt: string.isRequired,
     callback: func,
