@@ -62,14 +62,16 @@ export default class App extends Component {
   }
   nextPageHandler = (e) => {
     e.preventDefault();
-    this.fetchLogEntries(this.state.page + 1);
+    this.state.page++;
+    this.fetchLogEntries(this.state.page);
   }
   previousPageHandler = (e) => {
     e.preventDefault();
     if (this.state.page === 0) {
       return;
     }
-    this.fetchLogEntries(this.state.page - 1);
+    this.state.page--;
+    this.fetchLogEntries(this.state.page);
   }
   render() {
     return (
