@@ -9,7 +9,7 @@ const dblogEndpointUrl = `${window.location.origin}${drupalSettings.path.baseUrl
 
 export default class App extends Component {
   state = {
-    data: {},
+    data: [],
     loaded: false,
     buttonDisabled: false,
     page: 0,
