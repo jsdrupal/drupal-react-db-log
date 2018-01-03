@@ -1,8 +1,7 @@
 import React from 'react';
 import { arrayOf, string, func, shape } from 'prop-types';
 
-const onClickSort = (e) => {
-  e.preventDefault();
+const onClickSort = (entry) => {
   entry.callback(entry.sort, order);
 };
 
@@ -15,7 +14,7 @@ const TableHeader = ({ headerEntries, order }) => (
             {(entry.callback ? (
               <a
                 href={'?sort_by=timestamp_'}
-                onClick={onClickSort}
+                onClick={(e) => {e.preventDefault(); onClickSort(entry)}}
                 title={`Sort by ${entry.txt}`}
               >
                 {entry.txt}
