@@ -1,12 +1,24 @@
 import React from 'react';
 import { arrayOf, string, func, shape } from 'prop-types';
 
-const onClickSort = (e) => {
+const onClickSort = (entry, order) => (e) => {
   e.preventDefault();
   entry.callback(entry.sort, order);
 };
 
-const TableHeader = ({ headerEntries, order }) => (
+const tableSortIndicator = (entry, order, sortBy) => {
+  if (sortBy && entry.sort === sortBy) {
+    return (
+      <span className={`tablesort tablesort--${order}`}>
+        <span className="visually-hidden">
+          Sort descending
+        </span>
+      </span>
+    )
+  }
+};
+
+const TableHeader = ({ headerEntries, order, sortBy }) => (
   <thead>
     <tr>
       {
@@ -14,11 +26,12 @@ const TableHeader = ({ headerEntries, order }) => (
           <th key={`$txt-${entry.txt}`}>
             {(entry.callback ? (
               <a
-                href={'?sort_by=timestamp_'}
-                onClick={onClickSort}
+                href={`?sort_by=${entry.sort}`}
+                onClick={onClickSort(entry, order)}
                 title={`Sort by ${entry.txt}`}
               >
                 {entry.txt}
+                {tableSortIndicator(entry, order, sortBy)}
               </a>
             ) : (
               <span>{entry.txt}</span>
@@ -36,6 +49,7 @@ TableHeader.propTypes = {
     callback: func,
   })).isRequired,
   order: string.isRequired,
+  sortBy: string.isRequired,
 };
 
 export default TableHeader;

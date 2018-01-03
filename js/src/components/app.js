@@ -14,6 +14,7 @@ export default class App extends Component {
     buttonDisabled: false,
     page: 0,
     order: 'desc',
+    sortBy: 'wid',
     filterParams: {
       _format: 'json',
       sort_by: 'wid',
@@ -43,6 +44,7 @@ export default class App extends Component {
   sortHandler = (sort, order) => {
     this.setState({
       order: (order === 'desc' && 'asc') || 'desc',
+      sortBy: sort,
       filterParams: Object.assign(this.state.filterParams, { sort_by: `${sort}_${order}` }),
     }, () => this.fetchLogEntries(this.state.page));
   }
@@ -124,6 +126,7 @@ export default class App extends Component {
           <Table
             key="logTable"
             order={this.state.order}
+            sortBy={this.state.sortBy}
             header={[
               { txt: '' },
               { txt: 'Type', callback: this.sortHandler, sort: 'type' },
