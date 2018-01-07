@@ -8,7 +8,7 @@
     "watch:js": "./node_modules/.bin/webpack --watch --config webpack.config.dev.js",
     "lint:js": "./node_modules/.bin/eslint -c .eslintrc.json ./src",
     "build:js": "yarn run build:js-helpers && BABEL_ENV=production ./node_modules/.bin/webpack --progress --display-reasons --display-modules --config webpack.config.js",
-    "build:js-helpers": "./node_modules/.bin/babel-external-helpers | ./node_modules/.bin/minify --mangle false >> dist/helpers.js"
+    "build:js-helpers": "./node_modules/.bin/babel-external-helpers | ./node_modules/.bin/minify --mangle false > dist/helpers.js"
   },
   "dependencies": {
     "prop-types": "^15.6.0",
