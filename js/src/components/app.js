@@ -64,9 +64,9 @@ export default class App extends Component {
   }
   nextPageHandler = (e) => {
     e.preventDefault();
-    this.setState({
-      page: this.state.page + 1
-    }, () => {
+    this.setState((prevState) => ({
+      page: prevState.page + 1
+    }), () => {
       this.fetchLogEntries(this.state.page);
     });
   }
@@ -75,9 +75,9 @@ export default class App extends Component {
     if (this.state.page === 0) {
       return;
     }
-    this.setState({
-      page: this.state.page - 1
-    }, () => {
+    this.setState((prevState) => ({
+      page: prevState.page - 1
+    }), () => {
       this.fetchLogEntries(this.state.page);
     });
   }
