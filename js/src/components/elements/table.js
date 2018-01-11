@@ -3,9 +3,9 @@ import { arrayOf, string, shape, func } from 'prop-types';
 
 import TableHeader from './tableHeader';
 
-const Table = ({ entries, header, order }) => (
+const Table = ({ entries, header, order, sortBy }) => (
   <table>
-    <TableHeader headerEntries={header} order={order} />
+    <TableHeader headerEntries={header} order={order} sortBy={sortBy}/>
     <tbody>
       {entries.map(entry => (
         <tr className={`${entry.type} ${entry.severity}`} key={entry.wid}>
@@ -34,6 +34,7 @@ Table.propTypes = {
     callback: func,
   })).isRequired,
   order: string.isRequired,
+  sortBy: string.isRequired,
 };
 
 export default Table;

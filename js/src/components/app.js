@@ -9,14 +9,17 @@ const dblogEndpointUrl = `${window.location.origin}${drupalSettings.path.baseUrl
 
 export default class App extends Component {
   state = {
-    data: {},
+    data: [],
     loaded: false,
     buttonDisabled: false,
     page: 0,
     order: 'desc',
+    sortBy: 'wid',
     filterParams: {
       _format: 'json',
       sort_by: 'wid',
+      type: [],
+      severity: [],
     },
   }
   componentDidMount() {
@@ -41,6 +44,7 @@ export default class App extends Component {
   sortHandler = (sort, order) => {
     this.setState({
       order: (order === 'desc' && 'asc') || 'desc',
+      sortBy: sort,
       filterParams: Object.assign(this.state.filterParams, { sort_by: `${sort}_${order}` }),
     }, () => this.fetchLogEntries(this.state.page));
   }
@@ -60,14 +64,22 @@ export default class App extends Component {
   }
   nextPageHandler = (e) => {
     e.preventDefault();
-    this.fetchLogEntries(this.state.page + 1);
+    this.setState((prevState) => ({
+      page: prevState.page + 1
+    }), () => {
+      this.fetchLogEntries(this.state.page);
+    });
   }
   previousPageHandler = (e) => {
     e.preventDefault();
     if (this.state.page === 0) {
       return;
     }
-    this.fetchLogEntries(this.state.page - 1);
+    this.setState((prevState) => ({
+      page: prevState.page - 1
+    }), () => {
+      this.fetchLogEntries(this.state.page);
+    });
   }
   render() {
     return (
@@ -79,6 +91,7 @@ export default class App extends Component {
               <Select
                 key="select-type"
                 onChange={this.typeFilterHandler}
+                selected={this.state.filterParams.type}
                 label="Type"
                 data={[
                   { value: 'access+denied', item: 'access denied' },
@@ -95,6 +108,7 @@ export default class App extends Component {
               <Select
                 key="select-severity"
                 onChange={this.severityFilterHandler}
+                selected={this.state.filterParams.severity}
                 label="Severity"
                 data={[
                   { value: '0', item: 'Emergency' },
@@ -112,6 +126,7 @@ export default class App extends Component {
           <Table
             key="logTable"
             order={this.state.order}
+            sortBy={this.state.sortBy}
             header={[
               { txt: '' },
               { txt: 'Type', callback: this.sortHandler, sort: 'type' },

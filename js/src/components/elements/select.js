@@ -16,23 +16,21 @@ export default class Select extends Component {
   constructor({ onChange }) {
     super();
     // @fixme State should be stored in this.state
-    this.selected = new Set();
     this.onChange = onChange;
   }
   changeHandler = (e) => {
-    if (this.selected.has(e.target.value)) {
-      this.selected.delete(e.target.value);
-    }
-    else {
-      this.selected.add(e.target.value);
-    }
-    this.onChange(this.selected);
+    const selected = new Set(
+      Array.from(e.target.options)
+        .filter(option => option.selected)
+        .map(option => option.value)
+    );
+    this.onChange(selected);
   }
   render() {
-    const { label, data } = this.props;
+    const { label, data, selected } = this.props;
     return [
       label !== '' ? <label key={`select-label-${label}`} htmlFor={`select-${label}`}>{label}</label> : '',
-      <select key={`select-${label || 'select'}`} multiple size="7" onChange={this.changeHandler} value={Array.from(this.selected)}>
+      <select key={`select-${label || 'select'}`} multiple size="7" onChange={this.changeHandler} value={Array.from(selected)}>
         {data.map(({ value, item }) => (
           <option key={`${item}-${value}`} value={value}>{item}</option>
         ))}
